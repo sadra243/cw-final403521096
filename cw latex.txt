@@ -1,0 +1,134 @@
+\documentclass[12pt]{article}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{geometry}
+
+\geometry{a4paper, margin=1in}
+
+\title{Cw-final 403521096}
+\author{Bahman \\ Sadra-bakhshi}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{GIT AND GITHUB}
+
+\subsection{Creating and Using a Repository}
+
+First, choose the repository section of the GitHub website. Then select a suitable name for the repository, e.g., \texttt{cw-final}. Next, clone and set up the GitHub repository with the following commands:
+
+\begin{lstlisting}[language=bash]
+echo "# cw-final403521096" >> README.md
+git init 
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/sadra243/cw-final403521096.git
+git push -u origin main
+\end{lstlisting}
+
+\subsection{Setting Up GitHub Actions Workflow}
+
+In the repository, create a directory \texttt{.github/workflows}. Inside \texttt{.github/workflows}, create a YAML file, e.g., \texttt{compile-latex.yml}, and use the following workflow:
+
+\begin{lstlisting}[language=yaml]
+name: Compile LaTeX Document
+
+on:
+  push:
+    branches:
+      - main  # Specify branches to trigger the workflow
+  pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Set up TeX Live
+      uses: dante-ev/latex-action@v2
+    - name: Compile LaTeX document
+      run: |
+        latexmk -pdf -interaction=nonstopmode -output-directory=build main.tex
+    - name: Upload compiled PDF
+      uses: actions/upload-artifact@v3
+      with:
+        name: compiled-pdf
+        path: build/main.pdf
+\end{lstlisting}
+
+\paragraph{Workflow Explanation:}
+The workflow triggers on \texttt{push} and \texttt{pull\_request} events for the main branch. It uses the following actions:
+\begin{itemize}
+    \item \texttt{actions/checkout}: Checks out the repository code.
+    \item \texttt{dante-ev/latex-action}: Sets up the TeX Live environment for LaTeX dependencies.
+    \item \texttt{actions/upload-artifact}: Uploads the compiled PDF as a downloadable artifact.
+\end{itemize}
+
+\section{Vim Commands}
+
+\subsection{Split, Tabs, and Buffers}
+\begin{itemize}
+    \item Splitting: Use \texttt{vsplit} or \texttt{split}.
+    \item Tabs: Open new tabs with \texttt{:newtab}, switch with \texttt{tabnext}.
+    \item Buffers:
+    \begin{itemize}
+        \item \texttt{:ls} - Lists buffers.
+        \item \texttt{b<number>} - Switch to a buffer.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Macros}
+\begin{itemize}
+    \item Start recording commands with \texttt{q}.
+    \item Stop recording with \texttt{@}.
+\end{itemize}
+
+\section{Memory Management}
+
+\subsection{Memory Leaks}
+A memory leak occurs when dynamically allocated memory (e.g., using \texttt{malloc}, \texttt{calloc}, or \texttt{realloc} in C) is not released using \texttt{free}. For example:
+
+\begin{lstlisting}[language=C]
+int *ptr = (int *)malloc(sizeof(int));
+*ptr = x;  // Memory allocated but never freed.
+\end{lstlisting}
+
+\subsection{Valgrind}
+Valgrind is a tool for memory debugging, profiling, and leak detection in C/C++ programs.
+
+\paragraph{Purpose:}
+\begin{itemize}
+    \item Detect memory leaks.
+    \item Track invalid memory access.
+    \item Provide detailed reports of issues.
+\end{itemize}
+
+\section{Fuzzy Search}
+
+\subsection{Overview}
+Fuzzy search matches approximate patterns in data.
+
+\subsection{Commands}
+\begin{itemize}
+    \item \texttt{fd --extension pdf} - List PDF files.
+    \item \texttt{fd --extension pdf | fzf} - Filter results using \texttt{fzf}.
+    \item Open PDF with \texttt{zathura}:
+    \begin{lstlisting}[language=bash]
+    zathura /path/to/selected/file.pdf
+    zathura $(find /path/to/search -name "desired_file.pdf")
+    \end{lstlisting}
+\end{itemize}
+
+\section{Using GitHub}
+
+\subsection{Sections 3.1 and 3.2}
+Follow GitHub setup and guidelines for project management.
+
+\subsection{Development Opportunities}
+GitHub offers numerous projects to enhance skills.
+
+\end{document}
